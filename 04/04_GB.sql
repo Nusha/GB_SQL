@@ -155,7 +155,7 @@ VALUES
 	('2020-02-12 07:20:19', 3),
 	('2020-02-12 07:35:38', 1);
 
-
+-- Вывести всю информацию об анализах, которые продавались 5 февраля 2020 и всю следующую неделю.
 SELECT ord_id AS 'Номер заказа', ord_datetime AS 'Дата / время', an_name AS 'Название анализа', an_cost AS 'Себестоимость',
 an_price AS 'Розничная цена', gr_name AS 'Группа анализов', gr_temp AS 'Температура хранения'
 FROM orders
@@ -166,6 +166,12 @@ WHERE ord_datetime BETWEEN '2020-02-05' AND date_add('2020-02-05', INTERVAL 7 DA
 -- А здесь посчитали сколько заработали;
 SELECT ord_id AS 'Номер заказа', ord_datetime AS 'Дата / время', an_name AS 'Название анализа', an_cost AS 'Себестоимость',
 an_price AS 'Розничная цена', an_price - an_cost AS 'Прибыль', gr_name AS 'Группа анализов', gr_temp AS 'Температура хранения'
+FROM orders
+LEFT JOIN analysis A ON A.an_id = orders.ord_an
+LEFT JOIN groupsan on an_group = gr_id
+WHERE ord_datetime BETWEEN '2020-02-05' AND date_add('2020-02-05', INTERVAL 7 DAY);
+
+SELECT sum(an_price - an_cost) AS 'Всего заработали за неделю'
 FROM orders
 LEFT JOIN analysis A ON A.an_id = orders.ord_an
 LEFT JOIN groupsan on an_group = gr_id
